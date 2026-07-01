@@ -1,0 +1,89 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  role      String   @default("user")
+  name      String?
+  createdAt DateTime @default(now())
+}
+
+model Contact {
+  id        String   @id @default(cuid())
+  name      String
+  email     String?
+  phone     String?
+  company   String?
+  createdAt DateTime @default(now())
+}
+
+model Distributor {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  company   String
+  phone     String?
+  address   String?
+  status    String   @default("active")
+  createdAt DateTime @default(now())
+  
+  productSelections DistributorProductSelection[]
+}
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  category    String
+  price       Int
+  stock       Int
+  rating      Float    @default(4.0)
+  image       String?  @default("📦")
+  description String?
+  status      String   @default("in-stock")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  selections      DistributorProductSelection[]
+}
+
+model DistributorProductSelection {
+  id            String    @id @default(cuid())
+  distributorId String
+  productId     String
+  selectedAt    DateTime  @default(now())
+  
+  distributor   Distributor @relation(fields: [distributorId], references: [id], onDelete: Cascade)
+  product       Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  
+  @@unique([distributorId, productId])
+}
+
+model Order {
+  id              String    @id @default(cuid())
+  userId          String
+  userName        String
+  productId       String
+  productName     String
+  qty             Int
+  total           Int
+  status          String    @default("pending")
+  paymentStatus   String    @default("pending")
+  paymentMethod   String
+  date            String
+  distributor     String
+  tracking        String    @default("—")
+  createdAt       DateTime  @default(now())
+  distributorId   String?
+  
+  @@map("orders")
+}
+
