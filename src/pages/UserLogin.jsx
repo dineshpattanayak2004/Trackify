@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { setToken, setRole, setUserName } from '../utils/auth';
+import { API_BASE_URL } from "../config/api";
 import userHero from "../assets/user-hero.png";
 
 export default function UserLogin(){
@@ -14,14 +15,14 @@ export default function UserLogin(){
     e.preventDefault();
     setError("");
     try{
-      const resp = await axios.post("http://localhost:4000/auth/login", { email, password });
+      const resp = await axios.post(`${API_BASE_URL}/auth/login`, { email, password });
       setToken(resp.data.token);
       setRole(resp.data.role);
       setUserName(resp.data.name);
       axios.defaults.headers.common['Authorization'] = `Bearer ${resp.data.token}`;
       navigate("/dashboard");
     }catch(err){
-      setError(err.response?.data?.error || "Login failed. Is the backend running on http://localhost:4000?");
+      setError(err.response?.data?.error || "Login failed. Please try again.");
     }
   };
 
