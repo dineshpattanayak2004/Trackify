@@ -3,6 +3,7 @@ import axios from 'axios';
 import Sidebar from '../components/Sidebar';
 import Navbar from '../components/Navbar';
 import { authHeader } from '../utils/auth';
+import { API_BASE_URL } from '../config/api';
 
 export default function Profile(){
   const [user, setUser] = useState(null);
@@ -13,7 +14,7 @@ export default function Profile(){
   useEffect(()=>{
     async function fetchProfile(){
       try{
-        const resp = await axios.get('http://localhost:4000/auth/me', { headers: authHeader() });
+        const resp = await axios.get(`${API_BASE_URL}/auth/me`, { headers: authHeader() });
         setDebugRaw(resp.data);
         const profile = resp.data?.user ?? resp.data;
         if(!profile){
@@ -33,16 +34,6 @@ export default function Profile(){
 
   if(loading) return <div className="p-8">Loading profile...</div>;
   if(error) return <div className="p-8">{error}</div>;
-
-  // show debug raw response when available for easier troubleshooting
-  const DebugView = () => (
-    debugRaw ? (
-      <div style={{padding:16,marginTop:12,background:'#fff',borderRadius:8}}>
-        <strong>Raw response:</strong>
-        <pre style={{whiteSpace:'pre-wrap',maxHeight:240,overflow:'auto'}}>{JSON.stringify(debugRaw,null,2)}</pre>
-      </div>
-    ) : null
-  );
 
   return (
     <div className="main-container">
@@ -74,7 +65,12 @@ export default function Profile(){
               <span>Assigned Leads</span>
               <strong>{user.assignedLeads ?? 'N/A'}</strong>
             </div>
-            <DebugView />
+            {debugRaw && (
+              <div style={{padding:16,marginTop:12,background:'#fff',borderRadius:8}}>
+                <strong>Raw response:</strong>
+                <pre style={{whiteSpace:'pre-wrap',maxHeight:240,overflow:'auto'}}>{JSON.stringify(debugRaw,null,2)}</pre>
+              </div>
+            )}
           </div>
         </div>
       </div>

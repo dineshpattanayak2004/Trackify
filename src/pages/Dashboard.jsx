@@ -7,6 +7,7 @@ import axios from "axios";
 import { authHeader } from '../utils/auth';
 import { Link } from "react-router-dom";
 import { FaBoxOpen, FaCreditCard, FaBell, FaTruck, FaCheckCircle } from "react-icons/fa";
+import { API_BASE_URL } from "../config/api";
 
 // ============================================================
 //  USER DASHBOARD — Welcome, Activities, Orders, Notifications
@@ -187,7 +188,7 @@ function AdminDashboard({ name }) {
   useEffect(() => {
     async function fetchStats() {
       try {
-        const resp = await axios.get("http://localhost:4000/ai/stats", { headers: authHeader() });
+        const resp = await axios.get(`${API_BASE_URL}/ai/stats`, { headers: authHeader() });
         if (resp.data?.metrics) {
           setStats(resp.data.metrics);
         }

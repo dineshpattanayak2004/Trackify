@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { setToken, setRole, setUserName } from '../utils/auth';
+import { API_BASE_URL } from "../config/api";
 
 export default function DistributorSignup() {
   const [name, setName] = useState("");
@@ -20,7 +21,7 @@ export default function DistributorSignup() {
     setLoading(true);
     try {
       const resp = await axios.post(
-        "http://localhost:4000/distributor/register",
+        `${API_BASE_URL}/distributor/register`,
         { name, email, password, company, phone, address }
       );
       if (resp.data.token) {

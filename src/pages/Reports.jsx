@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar";
 import { Chart, ArcElement, Tooltip, Legend, DoughnutController, BarController, BarElement, CategoryScale, LinearScale, LineController, LineElement, PointElement } from 'chart.js';
 import axios from 'axios';
 import { authHeader } from '../utils/auth';
+import { API_BASE_URL } from '../config/api';
 
 Chart.register(DoughnutController, ArcElement, Tooltip, Legend, BarController, BarElement, CategoryScale, LinearScale, LineController, LineElement, PointElement);
 
@@ -184,7 +185,7 @@ export default function Reports() {
   useEffect(() => {
     async function fetchStats() {
       try {
-        const resp = await axios.get('http://localhost:4000/analytics/snapshot', { headers: authHeader() });
+        const resp = await axios.get(`${API_BASE_URL}/analytics/snapshot`, { headers: authHeader() });
         const snap = resp.data?.snapshot ?? resp.data;
         if (snap) {
           setStats({

@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { setToken, setRole, setUserName } from '../utils/auth';
+import { API_BASE_URL } from "../config/api";
 import distributorHero from "../assets/distributor-hero.png";
 
 export default function DistributorLogin() {
@@ -16,7 +17,7 @@ export default function DistributorLogin() {
     setError("");
     setLoading(true);
     try {
-      const resp = await axios.post("http://localhost:4000/distributor/login", { email, password });
+      const resp = await axios.post(`${API_BASE_URL}/distributor/login`, { email, password });
       setToken(resp.data.token);
       setRole("distributor");
       setUserName(resp.data.name);

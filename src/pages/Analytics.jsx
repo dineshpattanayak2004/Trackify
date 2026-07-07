@@ -3,6 +3,7 @@ import { io } from "socket.io-client";
 import { Chart, LineController, LineElement, PointElement, LinearScale, Title, CategoryScale, BarController, BarElement, ArcElement, Tooltip, Legend, DoughnutController } from 'chart.js';
 import Sidebar from "../components/Sidebar";
 import Navbar from "../components/Navbar";
+import { API_BASE_URL } from "../config/api";
 
 Chart.register(LineController, LineElement, PointElement, LinearScale, Title, CategoryScale, BarController, BarElement, ArcElement, Tooltip, Legend, DoughnutController);
 
@@ -21,7 +22,7 @@ export default function Analytics(){
   });
 
   useEffect(()=>{
-    const socket = io("http://localhost:4000");
+    const socket = io(API_BASE_URL);
     socket.on("welcome", ()=>{ });
 
     socket.on("analytics:update", (payload)=>{

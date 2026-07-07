@@ -1,6 +1,7 @@
 import { getRole, logout, getToken, authHeader } from '../utils/auth';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../config/api';
 
 export default function Navbar() {
     const [role, setRole] = useState(()=> getRole());
@@ -10,7 +11,7 @@ export default function Navbar() {
         async function fetchMe(){
             if(!getToken()) return;
             try{
-                const resp = await axios.get('http://localhost:4000/auth/me', { headers: authHeader() });
+                const resp = await axios.get(`${API_BASE_URL}/auth/me`, { headers: authHeader() });
                 const profile = resp.data?.user ?? resp.data;
                 setUserName(profile?.name || profile?.email);
                 setRole(profile?.role || getRole());

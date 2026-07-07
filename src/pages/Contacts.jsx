@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../config/api";
 
 const contactColors = [
   { bg: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", accent: "#667eea" },
@@ -26,17 +27,21 @@ export default function Contacts() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", company: "" });
 
   const fetchList = async () => {
-    const resp = await axios.get("http://localhost:4000/contacts");
+    const resp = await axios.get(`${API_BASE_URL}/contacts`);
     setContacts(resp.data.contacts || []);
   };
 
   useEffect(() => {
-    fetchList();
+    async function loadContacts() {
+      const resp = await axios.get(`${API_BASE_URL}/contacts`);
+      setContacts(resp.data.contacts || []);
+    }
+    loadContacts();
   }, []);
 
   const submit = async (e) => {
     e.preventDefault();
-    await axios.post("http://localhost:4000/contacts", form);
+    await axios.post(`${API_BASE_URL}/contacts`, form);
     setForm({ name: "", email: "", phone: "", company: "" });
     fetchList();
   };

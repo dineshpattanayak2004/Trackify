@@ -4,6 +4,7 @@ import { io } from "socket.io-client";
 import { getUserName, getToken, logout } from '../utils/auth';
 import { useStore } from '../store/StoreContext';
 import { FaBox, FaTruck, FaChartLine, FaClipboardList, FaUsers, FaMoneyBillWave, FaSignOutAlt, FaBell, FaExclamationTriangle, FaCheckCircle, FaCog, FaHome, FaBoxes, FaShippingFast, FaChartBar, FaWarehouse, FaSearch, FaPlus, FaEdit, FaTrash, FaTimes } from "react-icons/fa";
+import { API_BASE_URL } from '../config/api';
 
 export default function DistributorDashboard() {
   const navigate = useNavigate();
@@ -49,7 +50,7 @@ export default function DistributorDashboard() {
   const clearNotifications = () => setNotifications([]);
 
   useEffect(() => {
-    const socket = io("http://localhost:4000");
+    const socket = io(API_BASE_URL);
     socketRef.current = socket;
     socket.on("connect", () => addNotification("Connected to live server", "success"));
     socket.on("analytics:update", (data) => setLiveData(data));
@@ -75,7 +76,7 @@ export default function DistributorDashboard() {
       }
       
       console.log("Fetching orders from API...");
-      const res = await fetch("http://localhost:4000/orders", {
+      const res = await fetch(`${API_BASE_URL}/orders`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       
@@ -139,7 +140,7 @@ export default function DistributorDashboard() {
       const token = getToken();
       
       // Fetch all DB products
-      const productsRes = await fetch("http://localhost:4000/products", {
+      const productsRes = await fetch(`${API_BASE_URL}/products`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (productsRes.ok) {
@@ -148,7 +149,7 @@ export default function DistributorDashboard() {
       }
 
       // Fetch distributor's selections
-      const res = await fetch("http://localhost:4000/distributor/selections", {
+      const res = await fetch(`${API_BASE_URL}/distributor/selections`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (res.ok) {
@@ -198,14 +199,14 @@ export default function DistributorDashboard() {
 
     try {
       if (isSelected) {
-        await fetch(`http://localhost:4000/distributor/selections/${dbProductId}`, {
+        await fetch(`${API_BASE_URL}/distributor/selections/${dbProductId}`, {
           method: "DELETE",
           headers: { Authorization: `Bearer ${token}` },
         });
         setSelectedProducts((prev) => prev.filter((id) => id !== localProductId));
         addNotification("Product removed from your selection", "info");
       } else {
-        const res = await fetch("http://localhost:4000/distributor/selections", {
+        const res = await fetch(`${API_BASE_URL}/distributor/selections`, {
           method: "POST",
           headers: {
             Authorization: `Bearer ${token}`,

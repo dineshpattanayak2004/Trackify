@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from "react";
 import axios from "axios";
 import { authHeader } from "../utils/auth";
+import { API_BASE_URL } from "../config/api";
 
 const suggestions = [
   "How many users are there?",
@@ -96,7 +97,7 @@ export default function AIAssistant() {
 
     try {
       const resp = await axios.post(
-        "http://localhost:4000/ai/ask",
+        `${API_BASE_URL}/ai/ask`,
         { question },
         { headers: authHeader() }
       );
@@ -111,7 +112,7 @@ export default function AIAssistant() {
         ...prev,
         {
           role: "assistant",
-          text: "⚠️ Sorry, I couldn't reach my backend. Please make sure the server is running on http://localhost:4000",
+          text: "⚠️ Sorry, I couldn't reach my backend. Please check your connection and try again.",
         },
       ]);
     } finally {
