@@ -1,5 +1,5 @@
 const API_BASE = import.meta.env.PROD 
-  ? window.location.origin 
+  ? `${window.location.origin}/api`
   : (import.meta.env.VITE_API_URL || 'http://localhost:4000');
 
 export const API_BASE_URL = API_BASE;
