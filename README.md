@@ -1,223 +1,256 @@
 # Trackify - Sales Tracking & Analytics Platform
 
-A full-stack sales tracking and analytics platform with real-time dashboard updates using React, Express, Prisma ORM, and Socket.io.
+A full-stack **CRM & Sales Tracking Platform** built with React, Vite, Express, and PostgreSQL, deployed on Vercel.
 
-## Tech Stack
+## 🚀 Live Demo
+
+```
+https://trackify.vercel.app
+```
+
+## 📸 Tech Stack
 
 ### Frontend
-- **React** - UI library
-- **Vite** - Build tool and dev server
-- **React Router** - Client-side routing
-- **Axios** - HTTP client for API calls
-- **Socket.io Client** - Real-time data updates
+| Technology | Purpose |
+|------------|---------|
+| **React 19** | UI Library |
+| **Vite 8** | Build Tool & Dev Server |
+| **React Router 7** | Client-side Routing |
+| **Chart.js** | Data Visualization |
+| **Axios** | HTTP Client |
+| **Socket.io Client** | Real-time Updates |
+| **React Icons** | Icons Library |
 
 ### Backend
-- **Express.js** - REST API server
-- **Socket.io** - WebSocket for real-time analytics
-- **Prisma ORM** - Database ORM
-- **SQLite** - Database (dev.db)
-- **JWT** - Authentication
-- **OpenAI API** - AI features
+| Technology | Purpose |
+|------------|---------|
+| **Express.js** | REST API Server |
+| **Prisma ORM** | Database ORM |
+| **PostgreSQL (Neon)** | Database |
+| **JWT** | Authentication |
+| **Socket.io** | WebSocket |
+| **OpenAI API** | AI Chat Feature |
+| **bcrypt** | Password Hashing |
 
-## Database Setup
+## ✨ Features
 
-### Prisma Configuration
-The project uses **Prisma ORM** with **SQLite** database.
+- ✅ **Role-based Access** - Admin, User, Distributor
+- ✅ **Real-time Dashboard** - Live analytics via Socket.io
+- ✅ **Lead Management** - Track and manage leads
+- ✅ **AI Agent** - AI-powered chat assistant
+- ✅ **Distributor Portal** - Product & order management
+- ✅ **Analytics & Reports** - Interactive charts
+- ✅ **Order Processing** - Full order lifecycle
+- ✅ **Payment Tracking** - Payment status management
+- ✅ **Mobile Responsive** - Works on all devices
 
-**Database Location:** `Tracify/server/prisma/dev.db`
-
-**Configuration Files:**
-- `Tracify/server/prisma/schema.prisma` - Database schema
-- `Tracify/server/.env` - Environment variables
-  ```
-  DATABASE_URL="file:./dev.db"
-  ```
-
-### Database Schema
-The database contains three main models:
-- **User** - Admin and regular users
-- **Contact** - Contact management
-- **Distributor** - Distributor information
-
-### Database Commands
-
-```bash
-# Navigate to server directory
-cd Tracify/server
-
-# Generate Prisma client
-npm run prisma:generate
-
-# Run database migrations
-npm run prisma:migrate
-
-# Seed database with initial data
-npm run seed
-```
-
-### Seed Data
-The database is pre-seeded with:
-- **Admin User:** `admin@trackify.test` / `adminpass`
-- **Regular User:** `user@trackify.test` / `userpass`
-
-## Socket.io - Real-time Features
-
-Socket.io is used for **real-time analytics updates** on the dashboard.
-
-### Implementation
-- **Server:** `Tracify/server/src/index.js` (lines 6, 27-32, 42-53)
-- **Event:** `analytics:update` - Broadcasts every 3 seconds
-- **Data:** Active users, leads, conversion rate, revenue
-
-### How it Works
-1. Client connects to Socket.io server
-2. Server emits `welcome` event on connection
-3. Every 3 seconds, server broadcasts `analytics:update` event with:
-   - `activeUsers` - Random count (100-300)
-   - `leads` - Random count (500-700)
-   - `conversionRate` - Random percentage (5-15%)
-   - `revenue` - Random amount (100000-150000)
-   - `timestamp` - Current ISO timestamp
-
-### API Endpoint
-- `GET /analytics/snapshot` - Returns current analytics snapshot (REST fallback)
-
-## Installation & Setup
+## 🛠️ Local Development
 
 ### Prerequisites
-- Node.js (v18+)
+- Node.js v18+
 - npm or yarn
 
-### Frontend Setup
+### 1. Clone & Install
+
 ```bash
-cd Tracify
+# Clone the repo
+git clone https://github.com/dineshpattanayak2004/Trackify.git
+cd Trackify
+
+# Install frontend dependencies
 npm install
-npm run dev
+
+# Install backend dependencies
+cd server
+npm install
+cd ..
 ```
 
-### Backend Setup
-```bash
-cd Tracify/server
-npm install
-npm run dev
-```
+### 2. Environment Variables
 
-### Environment Variables
-Create `Tracify/server/.env`:
+Create `server/.env`:
+
 ```env
-DATABASE_URL="file:./dev.db"
+DATABASE_URL="postgresql://user:password@host/db"
 JWT_SECRET=your_jwt_secret_here
 PORT=4000
 OPENAI_API_KEY=your_openai_api_key_here
 ```
 
-## Project Structure
+### 3. Database Setup
+
+```bash
+cd server
+npx prisma generate
+npx prisma db push
+node prisma/seed.js
+cd ..
+```
+
+### 4. Run Locally
+
+**Terminal 1 - Backend:**
+```bash
+cd server
+npm run dev
+```
+
+**Terminal 2 - Frontend:**
+```bash
+npm run dev
+```
+
+Open **http://localhost:5173** in your browser.
+
+## 🚢 Deploy to Vercel
+
+### 1. Push to GitHub
+```bash
+git add .
+git commit -m "Ready for deploy"
+git push
+```
+
+### 2. Connect to Vercel
+1. Go to [vercel.com](https://vercel.com)
+2. Import GitHub repo
+3. Framework: **Vite**
+4. Root directory: `./`
+
+### 3. Add Environment Variables
+In Vercel Dashboard → Settings → Environment Variables:
+
+| Name | Value |
+|------|-------|
+| `DATABASE_URL` | Your PostgreSQL URL |
+| `JWT_SECRET` | Your JWT secret |
+| `OPENAI_API_KEY` | Your OpenAI key |
+
+### 4. Deploy
+```bash
+vercel --prod
+```
+
+## 📁 Project Structure
 
 ```
-Tracify/
-├── server/
+Trackify/
+├── api/                      # Vercel serverless function
+│   └── index.js             # Express app (Vercel entry)
+├── public/                   # Static assets
+├── server/                   # Backend
 │   ├── prisma/
-│   │   ├── schema.prisma      # Database schema
-│   │   ├── dev.db             # SQLite database (auto-generated)
-│   │   └── seed.js            # Database seed script
-│   ├── src/
-│   │   ├── index.js           # Express server + Socket.io setup
-│   │   ├── middleware/
-│   │   │   └── auth.js         # JWT authentication
-│   │   └── routes/
-│   │       ├── auth.js         # Authentication routes
-│   │       ├── distributor.js # Distributor management
-│   │       ├── ai.js           # OpenAI integration
-│   │       ├── contacts.js     # Contact management
-│   │       └── analytics.js    # Analytics API
-│   ├── .env                    # Environment variables
-│   └── package.json
-├── src/                        # React frontend
-│   ├── pages/
-│   ├── components/
-│   └── ...
-└── README.md
+│   │   ├── schema.prisma     # Database schema
+│   │   └── seed.js           # Seed data
+│   └── src/
+│       ├── index.js          # Express server
+│       ├── middleware/
+│       │   └── auth.js       # JWT auth middleware
+│       └── routes/
+│           ├── auth.js       # Login/Register
+│           ├── distributor.js# Distributor API
+│           ├── orders.js     # Orders API
+│           ├── products.js   # Products API
+│           ├── contacts.js   # Contacts API
+│           ├── analytics.js  # Analytics API
+│           ├── ai.js         # OpenAI AI agent
+│           └── distributors-public.js
+├── src/                      # Frontend
+│   ├── assets/               # Images
+│   ├── components/           # Reusable components
+│   ├── config/               # API config
+│   ├── pages/                # Page components
+│   ├── store/                # Context API store
+│   └── utils/                # Utilities
+├── vercel.json               # Vercel config
+└── vite.config.js            # Vite config
 ```
 
-## Available Scripts
+## 🔐 Default Credentials (Seed Data)
 
-### Server Scripts
-```bash
-npm start          # Start production server
-npm run dev        # Start with nodemon (auto-reload)
-npm run prisma:generate  # Generate Prisma client
-npm run prisma:migrate   # Run migrations
-npm run seed       # Seed database
+| Role | Email | Password |
+|------|-------|----------|
+| Admin | `admin@trackify.test` | `adminpass` |
+| User | `user@trackify.test` | `userpass` |
+| Distributor | Register via `/distributor/signup` | - |
+
+## 📊 API Endpoints
+
+### Auth
 ```
-
-### Client Scripts
-```bash
-npm run dev        # Start Vite dev server
-npm run build      # Build for production
-npm run preview    # Preview production build
+POST /api/auth/register    - Register new user
+POST /api/auth/login       - Login
 ```
-
-## API Routes
-
-### Authentication
-- `POST /auth/register` - Register new user
-- `POST /auth/login` - Login user
 
 ### Distributors
-- `GET /distributor` - Get all distributors
-- `POST /distributor` - Create distributor
-- `PUT /distributor/:id` - Update distributor
-- `DELETE /distributor/:id` - Delete distributor
+```
+GET    /api/public/distributors           - List distributors
+GET    /api/public/distributors/:id/products - Distributor products
+POST   /api/distributor                   - Create distributor
+POST   /api/distributor/login             - Distributor login
+```
 
-### Contacts
-- `GET /contacts` - Get all contacts
-- `POST /contacts` - Create contact
-- `PUT /contacts/:id` - Update contact
-- `DELETE /contacts/:id` - Delete contact
+### Orders
+```
+GET    /api/orders         - Get orders
+POST   /api/orders         - Create order
+PUT    /api/orders/:id     - Update order
+DELETE /api/orders/:id     - Delete order
+```
 
-### Analytics
-- `GET /analytics/snapshot` - Get analytics snapshot
+### Other
+```
+GET    /api/analytics/snapshot  - Analytics data
+POST   /api/ai/chat             - AI chat completion
+GET    /api/contacts            - Get contacts
+```
 
-### AI
-- `POST /ai/chat` - OpenAI chat completion
+## 🔧 Available Scripts
 
-## Socket.io Events
-
-### Client → Server
-- `connection` - Client connects
-- `disconnect` - Client disconnects
-
-### Server → Client
-- `welcome` - Connection confirmation
-- `analytics:update` - Real-time analytics data (every 3s)
-
-## Features
-
-- ✅ User Authentication (JWT)
-- ✅ Distributor Management
-- ✅ Contact Management
-- ✅ Real-time Analytics Dashboard
-- ✅ AI-powered Chat (OpenAI)
-- ✅ Role-based Access Control (Admin/User)
-- ✅ SQLite Database with Prisma ORM
-- ✅ CORS enabled
-- ✅ Auto-reload with Nodemon
-
-## Development
-
-### Database Changes
-1. Modify `prisma/schema.prisma`
-2. Run `npm run prisma:migrate`
-3. Run `npm run prisma:generate`
-
-### Reset Database
+### Frontend
 ```bash
-# Delete dev.db and run migrations again
-rm prisma/dev.db
-npm run prisma:migrate
+npm run dev       # Start dev server
+npm run build     # Build for production
+npm run preview   # Preview production build
+npm run lint      # Run ESLint
+```
+
+### Backend
+```bash
+npm run dev       # Dev with nodemon
+npm start         # Production server
+npx prisma generate  # Generate Prisma client
+npx prisma db push   # Push schema to DB
+npm run seed         # Seed database
+```
+
+## 🧹 Cleanup & Maintenance
+
+### Remove old build files
+```bash
+rm -rf dist
+npm run build
+```
+
+### Reset database
+```bash
+cd server
+npx prisma migrate reset --force
 npm run seed
 ```
 
-## License
+## 🤝 Contributing
 
-MIT
+1. Fork the repo
+2. Create a feature branch: `git checkout -b feature-name`
+3. Commit changes: `git commit -m "Add feature"`
+4. Push: `git push origin feature-name`
+5. Open a Pull Request
+
+## 📄 License
+
+MIT License - feel free to use and modify.
+
+---
+
+**Built with ❤️ by Trackify Team**
