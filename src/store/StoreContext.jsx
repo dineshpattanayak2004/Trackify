@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useCallback } from "react";
 import { getToken } from "../utils/auth";
+import { API_BASE_URL } from "../config/api";
 
 const StoreContext = createContext(null);
 
@@ -73,7 +74,7 @@ export function StoreProvider({ children }) {
       // Save each order item to database
       for (const item of cartItems) {
         console.log("Saving order item:", item.name);
-        const response = await fetch("http://localhost:4000/orders", {
+        const response = await fetch(`${API_BASE_URL}/orders`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -184,7 +185,7 @@ export function StoreProvider({ children }) {
   // Fetch all active distributors
   const fetchDistributors = useCallback(async () => {
     try {
-      const response = await fetch("http://localhost:4000/public/distributors");
+      const response = await fetch(`${API_BASE_URL}/public/distributors`);
       if (response.ok) {
         const data = await response.json();
         setDistributors(data);
@@ -197,7 +198,7 @@ export function StoreProvider({ children }) {
   // Fetch products for selected distributor and map to local format
   const fetchDistributorProducts = useCallback(async (distributorId) => {
     try {
-      const response = await fetch(`http://localhost:4000/public/distributors/${distributorId}/products`);
+      const response = await fetch(`${API_BASE_URL}/public/distributors/${distributorId}/products`);
       if (response.ok) {
         const dbProducts = await response.json();
         // Map DB products to local product format by matching name
