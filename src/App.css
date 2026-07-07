@@ -19,6 +19,282 @@
   border-right: 1px solid rgba(255,255,255,0.08);
 }
 
+/* Mobile Responsive Styles */
+@media (max-width: 768px) {
+  .main-container {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    min-height: auto;
+    padding: 16px;
+    position: fixed;
+    bottom: 0;
+    top: auto;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 20px;
+  }
+
+  .logo {
+    display: none;
+  }
+
+  .menu-item {
+    padding: 10px 14px;
+    font-size: 0.85rem;
+  }
+
+  .menu-item svg {
+    font-size: 1rem;
+  }
+
+  .dashboard {
+    padding: 16px;
+    padding-bottom: 80px;
+  }
+
+  .navbar {
+    padding: 12px 16px;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .search-box {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .page-inner {
+    padding: 16px;
+  }
+
+  .page-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .page-title {
+    font-size: 1.75rem;
+  }
+
+  .card-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .stat-card {
+    padding: 16px;
+  }
+
+  .card-number {
+    font-size: 1.75rem;
+  }
+
+  .reports-stats-grid,
+  .analytics-stats-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .reports-charts-grid,
+  .reports-bottom-grid,
+  .analytics-bottom-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .report-chart-large,
+  .chart-canvas-wrapper {
+    min-height: 250px;
+  }
+
+  .report-chart-wrapper {
+    height: 220px;
+  }
+
+  .profile-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table {
+    font-size: 0.85rem;
+  }
+
+  th, td {
+    padding: 8px 4px;
+  }
+
+  .login-page {
+    padding: 16px;
+  }
+
+  .login-card {
+    padding: 24px 20px;
+  }
+
+  .login-card h1,
+  .login-card h2 {
+    font-size: 1.75rem;
+  }
+
+  .distributor-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .add-contact-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-stats-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .admin-management-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dist-stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dist-dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dist-products-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .dist-quick-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .dist-tab-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .dist-search-wrapper {
+    width: 100%;
+  }
+
+  .dist-analytics-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .user-card-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .user-actions-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ai-widget-card {
+    padding: 16px;
+  }
+
+  .ai-suggestions {
+    flex-wrap: wrap;
+  }
+
+  .suggestion {
+    font-size: 0.8rem;
+    padding: 8px 12px;
+  }
+
+  .contacts-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact-card {
+    margin-bottom: 16px;
+  }
+
+  .add-contact-section {
+    padding: 16px;
+  }
+
+  .modal-content {
+    padding: 20px;
+    margin: 16px;
+  }
+
+  .dist-modal {
+    padding: 20px;
+    margin: 16px;
+  }
+
+  .dist-form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .checkout-modal {
+    padding: 20px;
+    margin: 16px;
+  }
+
+  .success-popup {
+    padding: 24px 20px;
+    margin: 16px;
+  }
+
+  .order-details-modal {
+    padding: 20px;
+    margin: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .user-actions-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .dashboard-title {
+    font-size: 1.5rem;
+  }
+
+  .analytics-title {
+    font-size: 1.5rem;
+  }
+
+  .reports-title {
+    font-size: 1.5rem;
+  }
+
+  .stat-card {
+    padding: 12px;
+  }
+
+  .btn-primary,
+  .btn-secondary {
+    padding: 10px 16px;
+    font-size: 0.85rem;
+  }
+
+  input,
+  select,
+  textarea {
+    font-size: 0.9rem;
+  }
+}
+
 .logo{
   display:flex;
   align-items:center;
