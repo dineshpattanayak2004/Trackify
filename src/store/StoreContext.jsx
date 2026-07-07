@@ -3,9 +3,7 @@ import { getToken } from "../utils/auth";
 
 const StoreContext = createContext(null);
 
-// Shared products - same for user and distributor (24 products, 8 per distributor)
 const defaultProducts = [
-  // Test Distribution Co. Products (8 products)
   { id: 1, name: "Trackify Pro License", category: "Software", price: 2999, stock: 50, rating: 4.8, image: "📦", description: "Full CRM suite with AI agent, analytics, and unlimited leads." },
   { id: 2, name: "Trackify Starter Pack", category: "Software", price: 999, stock: 120, rating: 4.5, image: "🚀", description: "Basic CRM with lead management and reports." },
   { id: 3, name: "Premium Support Plan", category: "Service", price: 599, stock: 999, rating: 4.9, image: "🎧", description: "24/7 priority support with dedicated manager." },
@@ -15,7 +13,6 @@ const defaultProducts = [
   { id: 7, name: "Multi-User Access Pack", category: "Feature", price: 1999, stock: 100, rating: 4.7, image: "👨‍👩‍👧‍👦", description: "Add up to 20 team members with role-based access." },
   { id: 8, name: "Payment Gateway Integration", category: "Add-on", price: 2499, stock: 60, rating: 4.8, image: "💳", description: "Seamless payment gateway with 10+ payment options." },
 
-  // TechDistro Pvt Ltd Products (8 products)
   { id: 9, name: "AI Chatbot Assistant", category: "Feature", price: 4999, stock: 30, rating: 4.9, image: "🤖", description: "Intelligent AI chatbot for customer support automation." },
   { id: 10, name: "Social Media Manager", category: "Add-on", price: 1799, stock: 85, rating: 4.5, image: "📱", description: "Schedule, manage, and analyze social media posts." },
   { id: 11, name: "Lead Scoring Engine", category: "Feature", price: 2999, stock: 45, rating: 4.6, image: "🎯", description: "AI-powered lead scoring with predictive analytics." },
@@ -25,7 +22,6 @@ const defaultProducts = [
   { id: 15, name: "Workflow Automation", category: "Feature", price: 3499, stock: 40, rating: 4.8, image: "🔄", description: "Automate repetitive tasks with custom workflows." },
   { id: 16, name: "GDPR Compliance Toolkit", category: "Add-on", price: 3999, stock: 25, rating: 4.9, image: "🛡️", description: "Complete GDPR compliance with consent management." },
 
-  // Software Solutions Inc Products (8 products)
   { id: 17, name: "Cloud Storage 1TB", category: "Add-on", price: 2499, stock: 300, rating: 4.3, image: "☁️", description: "Secure cloud storage with 1TB space and 24/7 access." },
   { id: 18, name: "Security Suite Pro", category: "Software", price: 3999, stock: 40, rating: 4.9, image: "🔒", description: "Advanced security with encryption, firewall, threat detection." },
   { id: 19, name: "Team Collaboration Tools", category: "Feature", price: 799, stock: 150, rating: 4.4, image: "👥", description: "Real-time team chat, file sharing, task assignment." },
@@ -57,12 +53,10 @@ export function StoreProvider({ children }) {
   const [selectedDistributor, setSelectedDistributor] = useState(null);
   const [distributorProducts, setDistributorProducts] = useState([]);
 
-  // Get orders for a specific user
   const getUserOrders = useCallback((userId) => {
     return orders.filter((o) => o.userId === userId);
   }, [orders]);
 
-  // Get payments for a specific user
   const getUserPayments = useCallback((userId) => {
     return payments.filter((p) => p.userId === userId);
   }, [payments]);

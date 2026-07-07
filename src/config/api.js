@@ -1,16 +1,39 @@
-// Centralized API configuration
-// Uses environment variable in production, localhost in development
+const API_BASE = import.meta.env.PROD 
+  ? window.location.origin 
+  : 'http://localhost:4000';
 
-const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
+export const API_BASE_URL = API_BASE;
 
-export const api = {
-  baseURL: API_URL,
-  
-  // Helper to get full API endpoint
-  endpoint: (path) => `${API_URL}${path}`,
-  
-  // Socket.io connection URL
-  socketURL: API_URL,
-};
+export async function apiRequest(method, path, data = null, token = null) {
+  try {
+    const options = {
+      method,
+      headers: { 'Content-Type': 'application/json' },
+    };
 
-export default api;
+    if (token) {
+      options.headers['Authorization'] = `Bearer ${token}`;
+    }
+
+    if (data && method !== 'GET') {
+      options.body = JSON.stringify(data);
+    }
+
+    const url = `${API_BASE}${path}`;
+    console.log(`[API] ${method} ${url}`);
+    
+    const response = await fetch(url, options);
+    
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.warn(`[API] ${method} ${path} -> ${response.status}: ${errorText}`);
+      return { error: true, status: response.status, message: errorText };
+    }
+
+    const result = await response.json();
+    return { error: false, data: result };
+  } catch (err) {
+    console.warn(`[API] Network error: ${path}`, err.message);
+    return { error: true, status: 0, message: err.message };
+  }
+}

@@ -38,7 +38,6 @@ export function authHeader(){
   return token ? { Authorization: `Bearer ${token}` } : {};
 }
 
-// set axios default header when token exists
 const token = getToken();
 if(token){
   axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;

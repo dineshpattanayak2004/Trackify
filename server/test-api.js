@@ -1,4 +1,3 @@
-// Simple test to check if orders API is working
 import http from "http";
 
 const options = {

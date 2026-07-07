@@ -12,7 +12,6 @@ export async function verifyToken(req, res, next){
   try{
     const payload = jwt.verify(token, process.env.JWT_SECRET || 'secret');
     
-    // Support both regular users and distributors
     if (payload.role === "distributor") {
       const distributor = await prisma.distributor.findUnique({ where: { id: payload.userId } });
       if(!distributor) return res.status(401).json({ error: 'Invalid token' });

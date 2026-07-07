@@ -58,7 +58,6 @@ setInterval(() => {
   io.emit("analytics:update", payload);
 }, 3000);
 
-// Export io to be used by analytics module
 app.set("io", io);
 
 const PORT = process.env.PORT || 4000;

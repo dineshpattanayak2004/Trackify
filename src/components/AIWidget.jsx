@@ -11,7 +11,6 @@ const suggestions = [
   "Help me — what can you do?",
 ];
 
-// Animated robot eyes CSS keyframes (injected once)
 const robotStyleId = "robot-ai-styles";
 if (!document.getElementById(robotStyleId)) {
   const style = document.createElement("style");
@@ -70,7 +69,6 @@ export default function AIAssistant() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Robot eyes follow mouse
   const handleMouseMove = useCallback((e) => {
     if (!robotRef.current) return;
     const rect = robotRef.current.getBoundingClientRect();
@@ -128,7 +126,6 @@ export default function AIAssistant() {
     }
   };
 
-  // Render markdown-like bold text
   const renderText = (text) => {
     return text.split(/(\*\*.*?\*\*)/g).map((part, i) => {
       if (part.startsWith("**") && part.endsWith("**")) {

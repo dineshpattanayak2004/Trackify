@@ -10,7 +10,6 @@ async function hashPassword(password) {
 }
 
 async function main() {
-  // Hash passwords before creating users
   const adminPassword = await hashPassword('adminpass');
   const userPassword = await hashPassword('userpass');
 
@@ -40,7 +39,6 @@ async function main() {
   });
   console.log('Regular user created:', user.email, '| role:', user.role);
 
-  // Create multiple test distributors
   const distributorPassword = await hashPassword('distpass');
   const distributor1 = await prisma.distributor.upsert({
     where: { email: 'distributor@trackify.test' },
@@ -93,10 +91,8 @@ async function main() {
   await prisma.product.deleteMany({});
   console.log('✓ Cleared existing data');
 
-  // Create 24 completely unique products (8 per distributor, no overlap)
   console.log('\nCreating 24 unique products...');
 
-  // Test Distribution Co. Products (8 products - index 0-7)
   const dist1ProductsData = [
     { name: 'Trackify Pro License', category: 'Software', price: 2999, stock: 50, rating: 4.8, image: '📦', description: 'Full CRM suite with AI agent, analytics, and unlimited leads.' },
     { name: 'Trackify Starter Pack', category: 'Software', price: 999, stock: 120, rating: 4.5, image: '🚀', description: 'Basic CRM with lead management and reports.' },
@@ -108,7 +104,6 @@ async function main() {
     { name: 'Payment Gateway Integration', category: 'Add-on', price: 2499, stock: 60, rating: 4.8, image: '💳', description: 'Seamless payment gateway with 10+ payment options.' },
   ];
 
-  // TechDistro Pvt Ltd Products (8 products - index 8-15)
   const dist2ProductsData = [
     { name: 'AI Chatbot Assistant', category: 'Feature', price: 4999, stock: 30, rating: 4.9, image: '🤖', description: 'Intelligent AI chatbot for customer support automation.' },
     { name: 'Social Media Manager', category: 'Add-on', price: 1799, stock: 85, rating: 4.5, image: '📱', description: 'Schedule, manage, and analyze social media posts.' },
@@ -120,7 +115,6 @@ async function main() {
     { name: 'GDPR Compliance Toolkit', category: 'Add-on', price: 3999, stock: 25, rating: 4.9, image: '🛡️', description: 'Complete GDPR compliance with consent management.' },
   ];
 
-  // Software Solutions Inc Products (8 products - index 16-23)
   const dist3ProductsData = [
     { name: 'Cloud Storage 1TB', category: 'Add-on', price: 2499, stock: 300, rating: 4.3, image: '☁️', description: 'Secure cloud storage with 1TB space and 24/7 access.' },
     { name: 'Security Suite Pro', category: 'Software', price: 3999, stock: 40, rating: 4.9, image: '🔒', description: 'Advanced security with encryption, firewall, threat detection.' },
@@ -132,7 +126,6 @@ async function main() {
     { name: 'Smart Notification System', category: 'Add-on', price: 399, stock: 500, rating: 4.2, image: '🔔', description: 'Multi-channel notifications via email, SMS, and push.' },
   ];
 
-  // Create all products
   const allCreatedProducts = [];
   for (const productData of [...dist1ProductsData, ...dist2ProductsData, ...dist3ProductsData]) {
     const product = await prisma.product.create({ data: productData });
@@ -140,10 +133,8 @@ async function main() {
   }
   console.log(`✓ Created ${allCreatedProducts.length} products (8 per distributor, no overlap)`);
 
-  // Assign products to distributors (NO OVERLAP)
   console.log('\nCreating distributor product selections (no overlap)...');
   
-  // Distributor 1 - Test Distribution Co. gets Products 1-8 (indices 0-7)
   for (let i = 0; i < 8; i++) {
     await prisma.distributorProductSelection.upsert({
       where: {
@@ -161,7 +152,6 @@ async function main() {
   }
   console.log(`✓ Assigned 8 products to ${distributor1.company}`);
 
-  // Distributor 2 - TechDistro Pvt Ltd gets Products 9-16 (indices 8-15)
   for (let i = 8; i < 16; i++) {
     await prisma.distributorProductSelection.upsert({
       where: {
@@ -179,7 +169,6 @@ async function main() {
   }
   console.log(`✓ Assigned 8 products to ${distributor2.company}`);
 
-  // Distributor 3 - Software Solutions Inc gets Products 17-24 (indices 16-23)
   for (let i = 16; i < 24; i++) {
     await prisma.distributorProductSelection.upsert({
       where: {
