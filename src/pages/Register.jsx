@@ -1,9 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { API_BASE_URL } from "../config/api";
 
 export default function Register() {
-
+  const navigate = useNavigate();
   const [name,setName] = useState("");
   const [email,setEmail] = useState("");
   const [password,setPassword] = useState("");
@@ -18,7 +19,7 @@ export default function Register() {
     setLoading(true);
 
     try {
-      const response = await axios.post(
+      await axios.post(
         `${API_BASE_URL}/auth/register`,
         {
           name,
@@ -27,14 +28,14 @@ export default function Register() {
         }
       );
 
-      setSuccess("Registration Successful! You can now login.");
+      setSuccess("Registration Successful! Redirecting to user login...");
       setName("");
       setEmail("");
       setPassword("");
       
       setTimeout(() => {
-        window.location.href = "/login";
-      }, 2000);
+        navigate("/user-login", { replace: true });
+      }, 1500);
     } catch (err) {
       if (err.response && err.response.data) {
         setError(err.response.data.error || "Registration failed. Please try again.");
@@ -57,18 +58,23 @@ export default function Register() {
         
         <form onSubmit={register}>
           <input
+            type="text"
             placeholder="Name"
+            value={name}
             onChange={(e)=>setName(e.target.value)}
           />
 
           <input
+            type="email"
             placeholder="Email"
+            value={email}
             onChange={(e)=>setEmail(e.target.value)}
           />
 
           <input
             type="password"
             placeholder="Password"
+            value={password}
             onChange={(e)=>setPassword(e.target.value)}
           />
 
