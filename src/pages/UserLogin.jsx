@@ -37,17 +37,14 @@ export default function UserLogin(){
         <form onSubmit={submit}>
           <input placeholder="Email" value={email} onChange={e=>setEmail(e.target.value)} />
           <input placeholder="Password" type="password" value={password} onChange={e=>setPassword(e.target.value)} />
+          <p className="login-register-link">
+            Don't have an account? <Link to="/register">Register</Link>
+          </p>
           <button className="btn-primary" type="submit">Login</button>
         </form>
         {error && <p className="login-error">{error}</p>}
         <p className="login-hint">Try: user@trackify.test / userpass</p>
       </div>
-      <p>
-  Don't have an account?
-  <Link to="/register">
-    Register
-  </Link>
-</p>
     </div>
   );
 }
