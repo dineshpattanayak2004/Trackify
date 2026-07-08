@@ -105,8 +105,8 @@ export default function DistributorSignup() {
           </button>
         </form>
         {success && (
-          <div className="success-popup">
-            <p className="success-text">🎉 Registration successful! Redirecting to dashboard...</p>
+          <div className="login-success">
+            🎉 Registration successful! Redirecting to dashboard...
           </div>
         )}
         {error && <p className="login-error">{error}</p>}
