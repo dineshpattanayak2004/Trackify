@@ -13,6 +13,7 @@ export default function DistributorSignup() {
   const [address, setAddress] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
   const navigate = useNavigate();
 
   const submit = async (e) => {
@@ -29,7 +30,10 @@ export default function DistributorSignup() {
         setRole("distributor");
         setUserName(resp.data.distributor.name);
         axios.defaults.headers.common['Authorization'] = `Bearer ${resp.data.token}`;
-        navigate("/distributor/dashboard");
+        setSuccess(true);
+        setTimeout(() => {
+          navigate("/distributor/dashboard");
+        }, 1500);
       } else {
         navigate("/distributor/login");
       }
@@ -100,6 +104,11 @@ export default function DistributorSignup() {
             {loading ? "Creating Account..." : "Register as Distributor"}
           </button>
         </form>
+        {success && (
+          <div className="success-popup">
+            <p className="success-text">🎉 Registration successful! Redirecting to dashboard...</p>
+          </div>
+        )}
         {error && <p className="login-error">{error}</p>}
         <p className="distributor-switch">
           Already have an account?{" "}

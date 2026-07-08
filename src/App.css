@@ -249,6 +249,18 @@
   .success-popup {
     padding: 24px 20px;
     margin: 16px;
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.4);
+    border-radius: 16px;
+    text-align: center;
+    animation: fadeIn 0.3s ease;
+  }
+
+  .success-text {
+    color: #fff;
+    font-weight: 600;
+    font-size: 1rem;
+    margin: 0;
   }
 
   .order-details-modal {
