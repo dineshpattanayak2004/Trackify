@@ -5,6 +5,7 @@ import { setToken, setRole, setUserName } from '../utils/auth';
 import { API_BASE_URL } from "../config/api";
 
 export default function DistributorSignup() {
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -14,7 +15,6 @@ export default function DistributorSignup() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const navigate = useNavigate();
 
   const submit = async (e) => {
     e.preventDefault();
