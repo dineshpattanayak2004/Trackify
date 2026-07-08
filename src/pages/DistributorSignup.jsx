@@ -105,8 +105,31 @@ export default function DistributorSignup() {
           </button>
         </form>
         {success && (
-          <div className="login-success">
-            🎉 Registration successful! Redirecting to dashboard...
+          <div className="login-success" style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: 'rgba(13, 148, 136, 0.95)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 9999,
+            flexDirection: 'column',
+            gap: '16px'
+          }}>
+            <div style={{ fontSize: '3rem' }}>🎉</div>
+            <p style={{
+              color: '#fff',
+              fontSize: '1.2rem',
+              fontWeight: 700,
+              textAlign: 'center',
+              padding: '20px'
+            }}>
+              Registration successful!<br />
+              <span style={{ fontSize: '0.9rem', opacity: 0.9 }}>Redirecting to dashboard...</span>
+            </p>
           </div>
         )}
         {error && <p className="login-error">{error}</p>}
