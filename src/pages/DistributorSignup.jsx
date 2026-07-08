@@ -14,7 +14,6 @@ export default function DistributorSignup() {
   const [address, setAddress] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
 
   const submit = async (e) => {
     e.preventDefault();
@@ -30,10 +29,7 @@ export default function DistributorSignup() {
         setRole("distributor");
         setUserName(resp.data.distributor.name);
         axios.defaults.headers.common['Authorization'] = `Bearer ${resp.data.token}`;
-        setSuccess(true);
-        setTimeout(() => {
-          navigate("/distributor/dashboard");
-        }, 1500);
+        navigate("/distributor/dashboard");
       } else {
         navigate("/distributor/login");
       }
@@ -104,34 +100,6 @@ export default function DistributorSignup() {
             {loading ? "Creating Account..." : "Register as Distributor"}
           </button>
         </form>
-        {success && (
-          <div className="login-success" style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            background: 'rgba(13, 148, 136, 0.95)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 9999,
-            flexDirection: 'column',
-            gap: '16px'
-          }}>
-            <div style={{ fontSize: '3rem' }}>🎉</div>
-            <p style={{
-              color: '#fff',
-              fontSize: '1.2rem',
-              fontWeight: 700,
-              textAlign: 'center',
-              padding: '20px'
-            }}>
-              Registration successful!<br />
-              <span style={{ fontSize: '0.9rem', opacity: 0.9 }}>Redirecting to dashboard...</span>
-            </p>
-          </div>
-        )}
         {error && <p className="login-error">{error}</p>}
         <p className="distributor-switch">
           Already have an account?{" "}
