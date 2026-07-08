@@ -5,9 +5,12 @@ import { getUserName, getToken, logout } from '../utils/auth';
 import { useStore } from '../store/StoreContext';
 import { FaBox, FaTruck, FaChartLine, FaClipboardList, FaUsers, FaMoneyBillWave, FaSignOutAlt, FaBell, FaExclamationTriangle, FaCheckCircle, FaCog, FaHome, FaBoxes, FaShippingFast, FaChartBar, FaWarehouse, FaSearch, FaPlus, FaEdit, FaTrash, FaTimes } from "react-icons/fa";
 import { API_BASE_URL } from '../config/api';
+import MobileMenuToggle from '../components/MobileMenuToggle';
+import MobileOverlay from '../components/MobileOverlay';
 
 export default function DistributorDashboard() {
   const navigate = useNavigate();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const userName = getUserName() || "Distributor";
   const { products: storeProducts, orders: storeOrders, payments: storePayments } = useStore();
   const [dbOrders, setDbOrders] = useState([]);
@@ -328,20 +331,30 @@ export default function DistributorDashboard() {
     setProductForm(prev => ({ ...prev, [name]: value }));
   };
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
+
   return (
     <div className="distributor-layout">
-      <aside className="dist-sidebar">
+      <MobileMenuToggle onToggle={toggleMobileMenu} isOpen={isMobileMenuOpen} />
+      <MobileOverlay isOpen={isMobileMenuOpen} onClose={closeMobileMenu} />
+      <aside className={`dist-sidebar ${isMobileMenuOpen ? "open" : ""}`}>
         <div className="dist-sidebar-header"><div className="dist-logo"><div className="dist-logo-icon"><FaBoxes /></div><div><h2>Distributor</h2><p>Partner Portal</p></div></div></div>
         <div className="dist-sidebar-profile"><div className="dist-profile-avatar"><FaWarehouse /></div><div className="dist-profile-info"><span className="dist-profile-name">{userName}</span><span className="dist-profile-role">Distributor Partner</span></div></div>
         <nav className="dist-nav">
           <div className="dist-nav-section">Main</div>
-          <button className={`dist-nav-item ${activeTab === "overview" ? "active" : ""}`} onClick={() => setActiveTab("overview")}><FaHome /> Overview</button>
-          <button className={`dist-nav-item ${activeTab === "orders" ? "active" : ""}`} onClick={() => setActiveTab("orders")}><FaClipboardList /> Orders {distStats.pendingOrders > 0 && <span className="dist-nav-badge">{distStats.pendingOrders}</span>}</button>
-          <button className={`dist-nav-item ${activeTab === "products" ? "active" : ""}`} onClick={() => setActiveTab("products")}><FaBox /> Products</button>
-          <button className={`dist-nav-item ${activeTab === "payments" ? "active" : ""}`} onClick={() => setActiveTab("payments")}><FaMoneyBillWave /> Payments</button>
-          <button className={`dist-nav-item ${activeTab === "analytics" ? "active" : ""}`} onClick={() => setActiveTab("analytics")}><FaChartBar /> Analytics</button>
+          <button className={`dist-nav-item ${activeTab === "overview" ? "active" : ""}`} onClick={() => { setActiveTab("overview"); closeMobileMenu(); }}><FaHome /> Overview</button>
+          <button className={`dist-nav-item ${activeTab === "orders" ? "active" : ""}`} onClick={() => { setActiveTab("orders"); closeMobileMenu(); }}><FaClipboardList /> Orders {distStats.pendingOrders > 0 && <span className="dist-nav-badge">{distStats.pendingOrders}</span>}</button>
+          <button className={`dist-nav-item ${activeTab === "products" ? "active" : ""}`} onClick={() => { setActiveTab("products"); closeMobileMenu(); }}><FaBox /> Products</button>
+          <button className={`dist-nav-item ${activeTab === "payments" ? "active" : ""}`} onClick={() => { setActiveTab("payments"); closeMobileMenu(); }}><FaMoneyBillWave /> Payments</button>
+          <button className={`dist-nav-item ${activeTab === "analytics" ? "active" : ""}`} onClick={() => { setActiveTab("analytics"); closeMobileMenu(); }}><FaChartBar /> Analytics</button>
           <div className="dist-nav-section">Account</div>
-          <button className="dist-nav-item" onClick={() => navigate("/profile")}><FaCog /> Settings</button>
+          <button className="dist-nav-item" onClick={() => { navigate("/profile"); closeMobileMenu(); }}><FaCog /> Settings</button>
           <button className="dist-nav-item dist-nav-logout" onClick={handleLogout}><FaSignOutAlt /> Logout</button>
         </nav>
         <div className="dist-sidebar-footer"><FaShippingFast /> Distributor Access</div>

@@ -18,21 +18,36 @@ import {
  FaHeadset,
 } from "react-icons/fa";
 
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { getRole, logout, getUserName } from '../utils/auth';
 import Logo from './Logo';
+import MobileMenuToggle from './MobileMenuToggle';
+import MobileOverlay from './MobileOverlay';
 
 export default function Sidebar() {
   const role = getRole();
   const isAdmin = role === "admin";
   const userName = getUserName() || (isAdmin ? "Admin" : "User");
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
   };
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
+
   return (
-    <div className={`sidebar ${isAdmin ? "sidebar-admin" : "sidebar-user"}`}>
+    <>
+      <MobileMenuToggle onToggle={toggleMobileMenu} isOpen={isMobileMenuOpen} />
+      <MobileOverlay isOpen={isMobileMenuOpen} onClose={closeMobileMenu} />
+      <div className={`sidebar ${isAdmin ? "sidebar-admin" : "sidebar-user"} ${isMobileMenuOpen ? "open" : ""}`}>
 
       {/* Logo Section */}
       <div className="logo">
@@ -59,12 +74,12 @@ export default function Sidebar() {
       {/* ---- MAIN NAVIGATION ---- */}
       <div className="sidebar-section-label">Main</div>
 
-      <Link className="menu-item" to="/dashboard">
+      <Link className="menu-item" to="/dashboard" onClick={closeMobileMenu}>
         <FaHome />
         Dashboard
       </Link>
 
-      <Link className="menu-item" to="/ai-agent">
+      <Link className="menu-item" to="/ai-agent" onClick={closeMobileMenu}>
         <FaRobot />
         AI Agent
       </Link>
@@ -73,15 +88,15 @@ export default function Sidebar() {
       {!isAdmin && (
         <>
           <div className="sidebar-section-label">My Work</div>
-          <Link className="menu-item menu-item-user" to="/products">
+          <Link className="menu-item menu-item-user" to="/products" onClick={closeMobileMenu}>
             <FaShoppingCart />
             Products
           </Link>
-          <Link className="menu-item menu-item-user" to="/orders">
+          <Link className="menu-item menu-item-user" to="/orders" onClick={closeMobileMenu}>
             <FaBoxOpen />
             Orders
           </Link>
-          <Link className="menu-item menu-item-user" to="/payments">
+          <Link className="menu-item menu-item-user" to="/payments" onClick={closeMobileMenu}>
             <FaCreditCard />
             Payments
           </Link>
@@ -92,27 +107,27 @@ export default function Sidebar() {
       {isAdmin && (
         <>
           <div className="sidebar-section-label">Management</div>
-          <Link className="menu-item menu-item-admin" to="/admin">
+          <Link className="menu-item menu-item-admin" to="/admin" onClick={closeMobileMenu}>
             <FaUserShield />
             Admin Console
           </Link>
-          <Link className="menu-item menu-item-admin" to="/leads">
+          <Link className="menu-item menu-item-admin" to="/leads" onClick={closeMobileMenu}>
             <FaUsers />
             Manage Leads
           </Link>
-          <Link className="menu-item menu-item-admin" to="/customers">
+          <Link className="menu-item menu-item-admin" to="/customers" onClick={closeMobileMenu}>
             <FaUserFriends />
             Manage Customers
           </Link>
-          <Link className="menu-item menu-item-admin" to="/contacts">
+          <Link className="menu-item menu-item-admin" to="/contacts" onClick={closeMobileMenu}>
             <FaDatabase />
             Contact Database
           </Link>
-          <Link className="menu-item menu-item-admin" to="/reports">
+          <Link className="menu-item menu-item-admin" to="/reports" onClick={closeMobileMenu}>
             <FaChartBar />
             Reports & Analytics
           </Link>
-          <Link className="menu-item menu-item-admin" to="/analytics">
+          <Link className="menu-item menu-item-admin" to="/analytics" onClick={closeMobileMenu}>
             <FaChartLine />
             Advanced Analytics
           </Link>
@@ -122,22 +137,22 @@ export default function Sidebar() {
       {/* ---- COMMON ---- */}
       <div className="sidebar-section-label">Account</div>
 
-      <Link className="menu-item" to="/profile">
+      <Link className="menu-item" to="/profile" onClick={closeMobileMenu}>
         <FaCog />
         Profile Settings
       </Link>
 
-      <Link className="menu-item" to="/notifications">
+      <Link className="menu-item" to="/notifications" onClick={closeMobileMenu}>
         <FaBell />
         Notifications
       </Link>
 
-      <Link className="menu-item" to="/support">
+      <Link className="menu-item" to="/support" onClick={closeMobileMenu}>
         <FaHeadset />
         Support & Help
       </Link>
 
-      <Link className="menu-item" to="/help">
+      <Link className="menu-item" to="/help" onClick={closeMobileMenu}>
         <FaQuestionCircle />
         Help & Support
       </Link>
@@ -155,5 +170,6 @@ export default function Sidebar() {
         <span>{isAdmin ? "Admin Access Level 5" : "Standard Access"}</span>
       </div>
     </div>
+    </>
   );
 }
