@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { HashRouter, Routes, Route } from "react-router-dom";
 
 import Login from "./pages/Login";
 import Landing from "./pages/Landing";
@@ -30,7 +30,7 @@ import "./App.css";
 function App() {
   return (
     <StoreProvider>
-    <BrowserRouter>
+    <HashRouter>
 
       <Routes>
 
@@ -65,7 +65,7 @@ function App() {
 
       </Routes>
 
-    </BrowserRouter>
+    </HashRouter>
     </StoreProvider>
   );
 }
