@@ -53,31 +53,35 @@ export default function DistributorDashboard() {
   const clearNotifications = () => setNotifications([]);
 
   useEffect(() => {
-    const socket = io(API_BASE_URL);
-    socketRef.current = socket;
-    socket.on("connect", () => addNotification("Connected to live server", "success"));
-    socket.on("analytics:update", (data) => setLiveData(data));
-    socket.on("disconnect", () => addNotification("Disconnected from live server", "warning"));
-    return () => socket.disconnect();
+    try {
+      const socket = io(API_BASE_URL, {
+        transports: ['websocket', 'polling'],
+        reconnection: true,
+        reconnectionAttempts: 3,
+        reconnectionDelay: 1000,
+      });
+      socketRef.current = socket;
+      
+      socket.on("connect", () => {
+        console.log("Socket connected");
+        addNotification("Connected to live server", "success");
+      });
+      socket.on("analytics:update", (data) => setLiveData(data));
+      socket.on("disconnect", () => addNotification("Disconnected from live server", "warning"));
+      socket.on("connect_error", (err) => {
+        console.warn("Socket connection error:", err.message);
+      });
+      
+      return () => {
+        socket.disconnect();
+        socketRef.current = null;
+      };
+    } catch (err) {
+      console.warn("Failed to initialize socket:", err);
+    }
   }, []);
 
   const handleLogout = () => { if (socketRef.current) socketRef.current.disconnect(); logout(); };
-
-  // Error boundary fallback state
-  const [hasError, setHasError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-
-  // Catch any rendering errors
-  useEffect(() => {
-    const errorHandler = (error) => {
-      console.error("Dashboard error:", error);
-      setHasError(true);
-      setErrorMessage(error.message || "Something went wrong");
-    };
-
-    window.addEventListener('error', errorHandler);
-    return () => window.removeEventListener('error', errorHandler);
-  }, []);
 
   // Fetch orders from database
   const fetchOrders = async () => {
@@ -254,18 +258,28 @@ export default function DistributorDashboard() {
       try {
         if (isMounted) {
           await fetchProductSelections();
+        }
+      } catch (error) {
+        console.error("Failed to load product selections:", error);
+      }
+      
+      try {
+        if (isMounted) {
           await fetchOrders();
         }
       } catch (error) {
-        console.error("Failed to load dashboard data:", error);
-        if (isMounted) {
-          addNotification("Failed to load dashboard data. Please refresh.", "warning");
-        }
+        console.error("Failed to load orders:", error);
       }
     };
-    loadData();
+    
+    // Add a small delay to ensure component is fully mounted
+    const timer = setTimeout(() => {
+      loadData();
+    }, 100);
+    
     return () => {
       isMounted = false;
+      clearTimeout(timer);
     };
   }, []);
 
@@ -361,39 +375,6 @@ export default function DistributorDashboard() {
   const closeMobileMenu = () => {
     setIsMobileMenuOpen(false);
   };
-
-  if (hasError) {
-    return (
-      <div style={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: '#f0fdfa',
-        padding: '20px'
-      }}>
-        <div style={{
-          background: 'white',
-          padding: '32px',
-          borderRadius: '20px',
-          boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
-          maxWidth: '500px',
-          textAlign: 'center'
-        }}>
-          <div style={{ fontSize: '3rem', marginBottom: '16px' }}>⚠️</div>
-          <h2 style={{ color: '#dc2626', marginBottom: '12px' }}>Something went wrong</h2>
-          <p style={{ color: '#6b7280', marginBottom: '20px' }}>{errorMessage}</p>
-          <button 
-            onClick={() => window.location.href = '/distributor/dashboard'}
-            className="btn-primary"
-            style={{ padding: '12px 24px' }}
-          >
-            Refresh Dashboard
-          </button>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="distributor-layout">
