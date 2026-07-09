@@ -16,17 +16,18 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use("/auth", authRoutes);
-app.use("/distributor", distributorRoutes);
-app.use("/ai", aiRoutes);
-app.use("/contacts", contactsRoutes);
-app.use("/analytics", analyticsRoutes);
-app.use("/products", productsRoutes);
-app.use("/orders", ordersRoutes);
-app.use("/public/distributors", distributorsPublicRoutes);
+// API routes - mounted with /api prefix for Vercel compatibility
+app.use("/api/auth", authRoutes);
+app.use("/api/distributor", distributorRoutes);
+app.use("/api/ai", aiRoutes);
+app.use("/api/contacts", contactsRoutes);
+app.use("/api/analytics", analyticsRoutes);
+app.use("/api/products", productsRoutes);
+app.use("/api/orders", ordersRoutes);
+app.use("/api/public/distributors", distributorsPublicRoutes);
 
 // Health check endpoint
-app.get("/health", (req, res) => {
+app.get("/api/health", (req, res) => {
   res.json({ status: "ok", timestamp: new Date().toISOString() });
 });
 

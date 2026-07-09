@@ -22,7 +22,8 @@ export default function AdminLogin(){
       axios.defaults.headers.common['Authorization'] = `Bearer ${resp.data.token}`;
       navigate("/dashboard");
     }catch(err){
-      setError(err.response?.data?.error || "Login failed. Please try again.");
+      const raw = err.response?.data?.error || err.response?.data?.message || err.message || "Login failed. Please try again.";
+      setError(typeof raw === "string" ? raw : JSON.stringify(raw));
     }
   };
 

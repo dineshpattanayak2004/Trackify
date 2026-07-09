@@ -24,7 +24,8 @@ export default function DistributorLogin() {
       axios.defaults.headers.common['Authorization'] = `Bearer ${resp.data.token}`;
       navigate("/distributor/dashboard");
     } catch (err) {
-      setError(err.response?.data?.error || "Login failed. Is the backend running?");
+      const raw = err.response?.data?.error || err.response?.data?.message || err.message || "Login failed. Is the backend running?";
+      setError(typeof raw === "string" ? raw : JSON.stringify(raw));
     } finally {
       setLoading(false);
     }

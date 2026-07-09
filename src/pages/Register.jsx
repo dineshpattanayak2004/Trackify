@@ -37,11 +37,13 @@ export default function Register() {
         navigate("/user-login", { replace: true });
       }, 1500);
     } catch (err) {
+      let raw;
       if (err.response && err.response.data) {
-        setError(err.response.data.error || "Registration failed. Please try again.");
+        raw = err.response.data.error || err.response.data.message || "Registration failed. Please try again.";
       } else {
-        setError("Network error. Please check your connection and try again.");
+        raw = err.message || "Network error. Please check your connection and try again.";
       }
+      setError(typeof raw === "string" ? raw : JSON.stringify(raw));
     } finally {
       setLoading(false);
     }

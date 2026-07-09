@@ -34,7 +34,8 @@ export default function DistributorSignup() {
         navigate("/distributor/login");
       }
     } catch (err) {
-      setError(err.response?.data?.error || "Registration failed. Is the backend running?");
+      const raw = err.response?.data?.error || err.response?.data?.message || err.message || "Registration failed. Is the backend running?";
+      setError(typeof raw === "string" ? raw : JSON.stringify(raw));
     } finally {
       setLoading(false);
     }
